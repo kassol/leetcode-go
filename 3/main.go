@@ -4,28 +4,23 @@ import (
 	"fmt"
 )
 
-// BAD BAD BAD!!!!!
 func lengthOfLongestSubstring(s string) int {
-	for length := len(s); length > 0; length-- {
-		for index := 0; index <= len(s)-length; index++ {
-			if !checkRepeat(s[index : index+length]) {
-				return length
+	m := make(map[byte]int)
+	length := len(s)
+	ann, i, j := 0, 0, 0
+	for i < length && j < length {
+		index, found := m[s[j]]
+		if found && index >= i {
+			i = index + 1
+		} else {
+			m[s[j]] = j
+			j++
+			if j-i > ann {
+				ann = j - i
 			}
 		}
 	}
-	return 0
-}
-
-func checkRepeat(s string) bool {
-	m := make(map[rune]int)
-	for index, value := range s {
-		_, found := m[value]
-		if found {
-			return true
-		}
-		m[value] = index
-	}
-	return false
+	return ann
 }
 
 func main() {
