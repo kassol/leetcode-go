@@ -5,22 +5,19 @@ import (
 )
 
 func lengthOfLongestSubstring(s string) int {
-	m := make(map[byte]int)
+	m := make([]int, 128)
+	max := 0
 	length := len(s)
-	ann, i, j := 0, 0, 0
-	for i < length && j < length {
-		index, found := m[s[j]]
-		if found && index >= i {
-			i = index + 1
-		} else {
-			m[s[j]] = j
-			j++
-			if j-i > ann {
-				ann = j - i
-			}
+	for i, j := 0, 0; j < length; j++ {
+		if m[s[j]] > i {
+			i = m[s[j]]
 		}
+		if j-i+1 > max {
+			max = j - i + 1
+		}
+		m[s[j]] = j + 1
 	}
-	return ann
+	return max
 }
 
 func main() {
